@@ -9,6 +9,32 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Quiz {
+  id              Int               @id @default(autoincrement())
+  userId          String
+  createdAt       DateTime          @default(now())
+  published       Boolean           @default(false)
+  name            String
+  noOfQuestions   Int               @default(0)
+  description     String            @default("")
+  questions       String            @default("[]")
+  visits          Int               @default(0)
+  submissions     Int               @default(0)
+  shareURL        String            @unique @default(uuid())
+  quizSubmissions QuizSubmissions[]
+
+  @@unique([userId, name])
+}
+
+model QuizSubmissions {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  quizId    Int
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  response  String
 }
