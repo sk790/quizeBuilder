@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+      <NextTopLoader />
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -20,6 +23,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
         {children}
+        <Toaster />
         </ThemeProvider>
 
         </body>
